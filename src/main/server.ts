@@ -2,9 +2,10 @@ import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
-import 'reflect-metadata';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import { ensureAuthenticated } from '../application/middleware/ensureAuthenticated';
+import { userRoutes } from '../presentation/routes/userRoutes';
 
 dotenv.config();
 
@@ -36,6 +37,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World');
 });
+
+app.use('/api', ensureAuthenticated, userRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof Error) {

@@ -4,6 +4,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import swaggerUi from 'swagger-ui-express';
 import { ensureAuthenticated } from '../application/middleware/ensureAuthenticated';
+import { authRoutes } from '../presentation/routes/authRoutes';
 import { userRoutes } from '../presentation/routes/userRoutes';
 import { swaggerDocs } from './config/swagger';
 
@@ -20,6 +21,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello World');
 });
 
+app.use('/api', authRoutes);
 app.use('/api', ensureAuthenticated, userRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

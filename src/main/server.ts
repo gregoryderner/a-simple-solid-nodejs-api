@@ -5,6 +5,8 @@ import 'express-async-errors';
 import swaggerUi from 'swagger-ui-express';
 import { ensureAuthenticated } from '../application/middleware/ensureAuthenticated';
 import { authRoutes } from '../presentation/routes/authRoutes';
+import { clientRoutes } from '../presentation/routes/clientRoutes';
+import { contractRoutes } from '../presentation/routes/contractRoutes';
 import { userRoutes } from '../presentation/routes/userRoutes';
 import { swaggerDocs } from './config/swagger';
 
@@ -23,6 +25,8 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api', authRoutes);
 app.use('/api', ensureAuthenticated, userRoutes);
+app.use('/api', ensureAuthenticated, clientRoutes);
+app.use('/api', ensureAuthenticated, contractRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof Error) {

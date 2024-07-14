@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
@@ -8,6 +9,7 @@ import swaggerUi from 'swagger-ui-express';
 dotenv.config();
 
 const app = express();
+const prisma = new PrismaClient();
 
 app.use(express.json());
 

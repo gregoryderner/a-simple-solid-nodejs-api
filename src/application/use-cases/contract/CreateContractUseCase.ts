@@ -18,11 +18,12 @@ export class CreateContractUseCase {
     value,
     status,
   }: CreateContractRequest): Promise<void> {
+    const isoDate = new Date(contractDate).toISOString();
     await this.prisma.contract.create({
       data: {
         clientId,
         contractNumber,
-        contractDate,
+        contractDate: isoDate,
         value,
         status,
       },

@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { ContractController } from '../../application/interfaces/http/controllers/ContractController';
+import { ensureAdmin } from '../../application/middleware/ensureAdmin';
+import { ensureAuthenticated } from '../../application/middleware/ensureAuthenticated';
 
 /**
  * @swagger
@@ -48,9 +50,33 @@ import { ContractController } from '../../application/interfaces/http/controller
  *         description: Bad request
  */
 
+/**
+ * @swagger
+ * /api/contracts/{contractId}/cancel:
+ *   patch:
+ *     summary: Cancel a contract
+ *     tags: [Contracts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: contractId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Contract cancelled
+ *       400:
+ *         description: Bad request
+ *       403:
+ *         description: Access denied - Admins only
+ */
+
 const contractRoutes = Router();
 const contractController = new ContractController();
 
-contractRoutes.post('/contracts', contractController.create);
+contractRoutes.post('/contracts', ensureAuthenticated, contractController.create);
+contractRoutes.patch('/contracts/:contractId/cancel', ensureAuthenticated, ensureAdmin, contractController.cancel);
 
 export { contractRoutes };

@@ -42,6 +42,62 @@ import { ClientController } from '../../application/interfaces/http/controllers/
 
 /**
  * @swagger
+ * /api/clients/{clientId}:
+ *   patch:
+ *     summary: Update an existing client
+ *     tags: [Clients]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: clientId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               cpfCnpj:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Client updated
+ *       400:
+ *         description: Bad request
+ */
+
+/**
+ * @swagger
+ * /api/clients/{clientId}:
+ *   delete:
+ *     summary: Delete an existing client
+ *     tags: [Clients]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: clientId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       204:
+ *         description: Client deleted
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Client not found
+ */
+
+/**
+ * @swagger
  * /api/clients:
  *   get:
  *     summary: Filter clients by contract status
@@ -66,6 +122,8 @@ const clientRoutes = Router();
 const clientController = new ClientController();
 
 clientRoutes.post('/clients', clientController.create);
+clientRoutes.patch('/clients/:clientId', clientController.update);
+clientRoutes.delete('/clients/:clientId', clientController.delete);
 clientRoutes.get('/clients', clientController.filter);
 
 export { clientRoutes };

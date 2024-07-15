@@ -1,9 +1,13 @@
+import { PrismaClient } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 interface TokenPayload {
   sub: string;
+  role: string;
 }
+
+const prisma = new PrismaClient();
 
 export function ensureAuthenticated(
   req: Request,
@@ -20,9 +24,10 @@ export function ensureAuthenticated(
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as TokenPayload;
-    const { sub } = decoded;
+    const { sub, role } = decoded;
 
     req.userId = sub;
+    req.userRole = role;
 
     return next();
   } catch {

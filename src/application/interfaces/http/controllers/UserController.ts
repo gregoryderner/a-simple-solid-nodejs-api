@@ -18,6 +18,10 @@ export class UserController {
     const { name, email, password, role } = request.body;
     const isAdmin = request.userRole === 'ADMIN';
 
+    if(role && !isAdmin){
+      return response.status(401).send("You do not have permission to modify the ROLE field")
+    }
+
     const updateUserUseCase = new UpdateUserUseCase();
     await updateUserUseCase.execute({ userId: Number(userId), name, email, password, role, isAdmin });
 

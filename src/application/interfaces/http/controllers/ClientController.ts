@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { CreateClientUseCase } from '../../../use-cases/client/CreateClientUseCase';
 import { DeleteClientUseCase } from '../../../use-cases/client/DeleteClientUseCase';
 import { FilterClientsUseCase } from '../../../use-cases/client/FilterClientsUseCase';
+import { FindByIdClientUseCase } from '../../../use-cases/client/FindByIdClientUseCase';
+import { ListClientsUseCase } from '../../../use-cases/client/ListClientsUseCase';
 import { UpdateClientUseCase } from '../../../use-cases/client/UpdateClientUseCase';
 
 export class ClientController {
@@ -52,4 +54,26 @@ export class ClientController {
 
     return response.status(200).json(clients);
   }
+
+  async list(request: Request, response: Response): Promise<Response> {
+
+    const listClientsUseCase = new ListClientsUseCase();
+    const clients = await listClientsUseCase.execute();
+
+    return response.status(200).json(clients);
+  }
+
+  async findById(request: Request, response: Response): Promise<Response> {
+    const { clientId } = request.params;
+
+    const findUserUseCase = new FindByIdClientUseCase()
+    try {
+      const user = await findUserUseCase.execute({ clientId: Number(clientId) });
+      return response.status(200).json(user);
+    } catch (error) {
+      console.log(error)
+      return response.status(500).json({ message: "Error trying to receive client list" });
+    }
+  }
+
 }

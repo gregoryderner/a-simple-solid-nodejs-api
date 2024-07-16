@@ -11,7 +11,7 @@ export async function ensureAdmin(req: Request, res: Response, next: NextFunctio
   });
 
   if (user?.role !== 'ADMIN') {
-    return res.status(403).json({ error: 'Access denied: Admins only' });
+    return res.status(403).json({ message: 'Access denied: Admins only' });
   }
 
   return next();

@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
@@ -22,6 +23,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World');
 });
+
+app.use(cors({
+  origin: '*'
+}));
 
 app.use('/api', authRoutes);
 app.use('/api', ensureAuthenticated, userRoutes);

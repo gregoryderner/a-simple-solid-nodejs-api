@@ -106,6 +106,8 @@ const userRoutes = Router();
 const userController = new UserController();
 
 userRoutes.post('/users', ensureAuthenticated, userController.create);
+userRoutes.get('/users', ensureAuthenticated, userController.list);
+userRoutes.get('/users/:userId', ensureAuthenticated, userController.findById);
 userRoutes.patch('/users/:userId', ensureAuthenticated, userController.update);
 userRoutes.delete('/users/:userId', ensureAuthenticated, ensureAdmin, userController.delete);
 

@@ -122,8 +122,11 @@ const clientRoutes = Router();
 const clientController = new ClientController();
 
 clientRoutes.post('/clients', clientController.create);
+clientRoutes.get('/clients', clientController.list);
+clientRoutes.get('/clients/:clientId', clientController.findById);
+clientRoutes.get('/clients', clientController.filter);
 clientRoutes.patch('/clients/:clientId', clientController.update);
 clientRoutes.delete('/clients/:clientId', clientController.delete);
-clientRoutes.get('/clients', clientController.filter);
+
 
 export { clientRoutes };
